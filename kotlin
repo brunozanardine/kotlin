@@ -1,0 +1,22 @@
+class carro( val nome : String, val cor : String, val modelo : String){
+    
+	init{ println("criar objeto da classe carro")
+	}
+
+	fun printar_objeto(){
+    println("nome "+ nome)
+    println("cor " + cor)
+    println("modelo " + modelo)
+    println()
+    }
+}
+
+
+fun main (){
+    val carro1 = carro("vw polo","cinza","hatchback")
+    carro1.printar_objeto()
+    
+    val carro2 = carro("vw kombi","preta","van")
+    carro2.printar_objeto()  
+  
+}
