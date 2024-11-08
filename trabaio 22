@@ -1,0 +1,96 @@
+class Carro(
+    val modelo: String,
+    val marca: String,
+    val ano: String,
+    var disponibilidade: Boolean,  // Mudado para var porque será alterado
+    val precoDiario: Double  // Mudado para Double, pois preço é numérico
+) {
+
+    fun infoCarro() {
+        println("Modelo do carro: $modelo")
+        println("Marca: $marca")
+        println("Ano: $ano")
+        println("Disponibilidade: $disponibilidade")
+        println("Preço diário: R$ $precoDiario")
+    }
+
+    fun verificarDisponibilidade(): Boolean {
+        return disponibilidade
+    }
+
+    fun alterarStatusDisponibilidade(status: Boolean) {
+        disponibilidade = status
+    }
+}
+
+class Cliente(
+    val nome: String,
+    val cpf: Long,
+    val carteiraDeMotorista: Long
+) {
+
+    fun infoCliente() {
+        println("Nome: $nome")
+        println("CPF: $cpf")
+        println("Carteira de motorista: $carteiraDeMotorista")
+    }
+
+    // Verifica se o cliente tem carteira de motorista válida
+    fun possuiCarteiraDeMotorista(): Boolean {
+        return carteiraDeMotorista != 0L
+    }
+}
+
+class Locacao(
+    val dataInicio: String,
+    val dataFim: String,
+    val cliente: Cliente,
+    val carro: Carro
+) {
+
+    fun calcularValorTotal(): Double {
+        val diasDeLocacao = 10 // Exemplo, você poderia calcular a diferença de datas
+        return diasDeLocacao * carro.precoDiario
+    }
+
+    fun realizarLocacao() {
+        if (!cliente.possuiCarteiraDeMotorista()) {
+            println("Cliente ${cliente.nome} não tem carteira de motorista válida!")
+            return
+        }
+
+        if (carro.verificarDisponibilidade()) {
+            carro.alterarStatusDisponibilidade(false)  // Altera status para carro alugado
+            val valorTotal = calcularValorTotal()
+            println("Locação realizada com sucesso!")
+            println("Valor total da locação: R$ $valorTotal")
+        } else {
+            println("Carro ${carro.modelo} está indisponível!")
+        }
+    }
+
+    fun devolverCarro() {
+        carro.alterarStatusDisponibilidade(true)  // Altera status para carro disponível
+        println("Carro ${carro.modelo} devolvido com sucesso!")
+    }
+}
+
+fun main() {
+    val carro1 = Carro("Ford Ka", "Ford", "2024", true, 200.0)
+    val carro2 = Carro("Classe A", "Mercedes", "2023", false, 400.0)
+
+    val cliente1 = Cliente("Rogerin", 32154678943, 123456789)
+    val cliente2 = Cliente("Bruno", 15416625571, 987654321)
+
+    carro1.infoCarro()
+    cliente1.infoCliente()
+
+    val locacao1 = Locacao("10/06/25", "30/06/25", cliente1, carro1)
+    locacao1.realizarLocacao()  // Simula a locação
+
+    // Exemplo de devolução de carro
+    locacao1.devolverCarro()
+
+    val locacao2 = Locacao("20/07/25", "10/07/25", cliente2, carro2)
+    locacao2.realizarLocacao()  // Tenta alugar um carro indisponível
+}
